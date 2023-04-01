@@ -4,6 +4,10 @@
 
 ## Cederbaum, Tarantelli three state model $^{1, 2}$ : Metastable ($V_d-i\frac{\Gamma}{2}$), Final decaying channel ($V_f$), Initial state ($V_i$)
 
+<p align="center">
+    <img src="./data/wp-dyn_model2d.jpg" alt="Three state model: autoionizing decay" width="650" height="500">
+</p>
+
 > Initial wave-packet $\Phi_0$ is created on the Initial state ($V_i$) and excited to the metastable state
 
 ```math
