@@ -1,0 +1,72 @@
+!This is an external subroutine that creates phase and momnetum space grid in 2D
+! L, M is the dimension of the 2D grid.
+! Need to create POTFUNC input file in a grid of L, M. See (README.md)
+
+SUBROUTINE VARIABLE (X, Y, XMESH, YMESH, P_XMESH, P_YMESH, NXMESH, NYMESH, dX, dY, dKX, dKY)
+USE CONST
+IMPLICIT REAL*8(A-H,O-Z)
+
+     
+REAL*8, INTENT(OUT) :: X(L), Y(M)
+REAL*8, INTENT(OUT) :: XMESH(L, M), YMESH(L, M)
+REAL*8, INTENT(OUT) :: P_XMESH(L, M), P_YMESH(L, M)
+INTEGER, INTENT(OUT) :: NXMESH(L, M), NYMESH(L, M)
+
+REAL(8), ALLOCATABLE :: P_X(:), P_Y(:)
+INTEGER, ALLOCATABLE :: NXARANGE(:), NYARANGE(:)
+
+
+ALLOCATE (P_X(L))
+ALLOCATE (P_Y(M))
+ALLOCATE (NXARANGE(L))
+ALLOCATE (NYARANGE(M))
+
+DO I=1, L,1
+    NXARANGE(I)=I
+ENDDO
+DO I=1, M,1
+    NYARANGE(I)=I
+ENDDO
+
+
+dX=(XMAX-XMIN)/DFLOAT(L-1)
+dY=(YMAX-YMIN)/DFLOAT(M-1)
+
+DO I =1,L,1
+    X(I)=XMIN+(I-1)*dX
+ENDDO
+DO I =1,M,1
+    Y(I)=YMIN+(I-1)*dY
+ENDDO
+
+dKX = 2.D0 *PI / (L * dX)
+P0_X = -PI / dX
+P_X = P0_X + dKX * (NXARANGE-1)
+
+dKY = 2.D0 *PI / (M * dY)
+P0_Y = -PI / dY
+P_Y = P0_Y + dKY * (NYARANGE-1)
+
+DO I=1, L, 1
+   DO J =1, M, 1
+   XMESH(I, J)= X(I)
+   YMESH(I, J)= Y(J)
+   P_XMESH(I, J)= P_X(I)
+   P_YMESH(I, J)= P_Y(J)
+   ENDDO
+ENDDO
+
+DO I=1, L, 1
+   DO J =1, M, 1
+   NXMESH(I, J)= I
+   NYMESH(I, J)= J
+   ENDDO
+ENDDO
+
+
+DEALLOCATE (P_X)
+DEALLOCATE (P_Y)
+DEALLOCATE (NXARANGE)
+DEALLOCATE (NYARANGE)
+
+END SUBROUTINE VARIABLE
