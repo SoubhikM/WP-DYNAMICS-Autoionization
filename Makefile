@@ -1,11 +1,17 @@
 #Choose your desired complier: ifort/gfortran
-
-FC=ifort
+FC=gfortran#ifort
 
 ifeq ($(FC),ifort)
         FFLAGS=-O2 -g -traceback 
 else ifeq ($(FC),gfortran)
-        FFLAGS=-O2 -g -fbacktrace -w
+# if gfortran version >10, adding '-fallow-argument-mismatch' flag
+		GCCVERSIONGTEQ4 := $(shell expr `gcc -dumpversion | cut -f1 -d.` \>= 10)
+		CFLAGS=
+		ifeq "$(GCCVERSIONGTEQ4)" "1"
+    		CFLAGS += -fallow-argument-mismatch
+		endif
+		
+        FFLAGS=-O2 -g -fbacktrace -w $(CFLAGS)
 endif
 
 OBJDIR=bin
